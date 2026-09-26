@@ -1,0 +1,11 @@
+You are an expert technical placement advisor.
+Analyze the following student onboarding profile:
+Domain: {domain_id}
+Target Role: {target_role}
+Timeline: {target_timeline_months} months
+Current Skills: {initial_skills}
+
+Generate a structured JSON response containing:
+1. Recommended initial skill baseline ratings (0-100)
+2. Suggested diagnostic focus areas
+3. Estimated readiness timeline analysis
