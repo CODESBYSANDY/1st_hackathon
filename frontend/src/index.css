@@ -1,0 +1,476 @@
+:root {
+  /* Brand Palettes */
+  --primary-50: #EFF6FF;
+  --primary-100: #DBEAFE;
+  --primary-500: #3B82F6;
+  --primary-600: #2563EB;
+  --primary-700: #1D4ED8;
+
+  --cyan-400: #22D3EE;
+  --cyan-500: #06B6D4;
+  --cyan-600: #0891B2;
+
+  --purple-400: #C084FC;
+  --purple-500: #A855F7;
+  --purple-600: #7C3AED;
+  --purple-700: #6D28D9;
+
+  --indigo-500: #6366F1;
+  --indigo-600: #4F46E5;
+
+  /* Game Accent Tokens */
+  --gold-400: #FBBF24;
+  --gold-500: #F59E0B;
+  --xp-color: #8B5CF6;
+  --coin-color: #F59E0B;
+  --streak-color: #EF4444;
+  --success-500: #10B981;
+  --warning-500: #F59E0B;
+  --danger-500: #EF4444;
+
+  /* Surfaces & Canvas (Clean Light Aesthetic) */
+  --bg-main: #F8FAFC;
+  --bg-canvas: #FFFFFF;
+  --surface-card: #FFFFFF;
+  --surface-card-subtle: #F1F5F9;
+  --surface-glass: rgba(255, 255, 255, 0.88);
+  --border-subtle: #E2E8F0;
+  --border-active: #93C5FD;
+  --border-glow: rgba(59, 130, 246, 0.35);
+
+  /* Typography */
+  --text-main: #0F172A;
+  --text-muted: #64748B;
+  --text-subtle: #94A3B8;
+  --text-inverse: #FFFFFF;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 14px -2px rgba(15, 23, 42, 0.06), 0 2px 6px -2px rgba(15, 23, 42, 0.04);
+  --shadow-lg: 0 12px 28px -4px rgba(15, 23, 42, 0.08), 0 6px 12px -4px rgba(15, 23, 42, 0.03);
+  --shadow-glow-cyan: 0 0 24px rgba(6, 182, 212, 0.25);
+  --shadow-glow-purple: 0 0 24px rgba(139, 92, 246, 0.25);
+  --shadow-glow-blue: 0 0 24px rgba(37, 99, 235, 0.25);
+
+  /* Layout */
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+  --radius-full: 9999px;
+  --top-nav-height: 70px;
+  --sidebar-width: 250px;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  background-color: var(--bg-main);
+  color: var(--text-main);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* STRICT ZERO-SCROLL LOCK FOR LOGIN PAGE */
+html.login-lock,
+body.login-lock {
+  overflow: hidden !important;
+  height: 100vh !important;
+  max-height: 100vh !important;
+  width: 100vw !important;
+  max-width: 100vw !important;
+  position: fixed !important;
+  overscroll-behavior: none !important;
+  touch-action: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+html.login-lock::-webkit-scrollbar,
+body.login-lock::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+code, pre, .font-mono {
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* Background Atmosphere (Subtle Mountain / Tech Gradients) */
+.bg-game-atmosphere {
+  background: 
+    radial-gradient(circle at 15% 10%, rgba(6, 182, 212, 0.08) 0%, transparent 35%),
+    radial-gradient(circle at 85% 15%, rgba(139, 92, 246, 0.09) 0%, transparent 40%),
+    radial-gradient(circle at 50% 90%, rgba(37, 99, 235, 0.06) 0%, transparent 50%),
+    linear-gradient(180deg, #F8FAFC 0%, #F1F5F9 100%);
+}
+
+/* Glass Card */
+.glass-card {
+  background: var(--surface-glass);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glass-card:hover {
+  box-shadow: var(--shadow-lg);
+  border-color: var(--border-active);
+}
+
+/* Game Node Status Badges */
+.badge-node {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.badge-recommended {
+  background: linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%);
+  color: #1D4ED8;
+  border: 1px solid #93C5FD;
+  box-shadow: 0 0 12px rgba(59, 130, 246, 0.2);
+}
+
+.badge-completed {
+  background: #ECFDF5;
+  color: #065F46;
+  border: 1px solid #A7F3D0;
+}
+
+.badge-mastered {
+  background: linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%);
+  color: #92400E;
+  border: 1px solid #FCD34D;
+  box-shadow: 0 0 10px rgba(245, 158, 11, 0.2);
+}
+
+.badge-reinforcement {
+  background: #FFF1F2;
+  color: #BE123C;
+  border: 1px solid #FECDD3;
+}
+
+.badge-locked {
+  background: #F1F5F9;
+  color: #64748B;
+  border: 1px solid #CBD5E1;
+}
+
+.badge-in-progress {
+  background: #F5F3FF;
+  color: #5B21B6;
+  border: 1px solid #DDD6FE;
+}
+
+/* Primary Game Button */
+.btn-game-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: linear-gradient(135deg, var(--primary-600) 0%, var(--purple-600) 100%);
+  color: white;
+  padding: 12px 24px;
+  border-radius: var(--radius-md);
+  font-weight: 700;
+  font-size: 0.95rem;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.3);
+  transition: all 0.2s ease;
+  text-decoration: none;
+}
+
+.btn-game-primary:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
+}
+
+.btn-game-primary:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.btn-game-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: white;
+  color: var(--text-main);
+  padding: 12px 22px;
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  font-size: 0.95rem;
+  border: 1px solid var(--border-subtle);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+}
+
+.btn-game-secondary:hover:not(:disabled) {
+  background: var(--surface-card-subtle);
+  border-color: #CBD5E1;
+}
+
+/* Lynx Speech Bubble */
+.lynx-bubble {
+  position: relative;
+  background: white;
+  border-radius: var(--radius-lg);
+  padding: 14px 18px;
+  border: 1px solid #E2E8F0;
+  box-shadow: var(--shadow-md);
+  font-size: 0.92rem;
+  line-height: 1.45;
+  color: #1E293B;
+}
+
+.lynx-bubble::after {
+  content: '';
+  position: absolute;
+  left: 20px;
+  bottom: -9px;
+  width: 16px;
+  height: 16px;
+  background: white;
+  border-right: 1px solid #E2E8F0;
+  border-bottom: 1px solid #E2E8F0;
+  transform: rotate(45deg);
+}
+
+/* Animations */
+@keyframes floatGentle {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-6px); }
+}
+
+@keyframes pulseGlow {
+  0%, 100% { box-shadow: 0 0 15px rgba(6, 182, 212, 0.3); }
+  50% { box-shadow: 0 0 25px rgba(6, 182, 212, 0.6); }
+}
+
+@keyframes flameFlicker {
+  0%, 100% { transform: scale(1) rotate(-1deg); }
+  50% { transform: scale(1.08) rotate(1deg); }
+}
+
+.anim-float {
+  animation: floatGentle 3.5s ease-in-out infinite;
+}
+
+.anim-pulse-glow {
+  animation: pulseGlow 2.5s ease-in-out infinite;
+}
+
+.anim-flame {
+  animation: flameFlicker 1.8s ease-in-out infinite;
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ==========================================================================
+   NETRA HERO & LYNX ANIMATION SYSTEM
+   ========================================================================== */
+
+.text-gradient-placement {
+  background: linear-gradient(135deg, #2563EB 0%, #7C3AED 60%, #9333EA 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+@keyframes lynxBreathing {
+  0%, 100% {
+    transform: translateY(0px) scale(1);
+  }
+  50% {
+    transform: translateY(-4px) scale(1.006);
+  }
+}
+
+@keyframes lynxBlinkLoop {
+  0%, 93%, 100% {
+    opacity: 0;
+    transform: scaleY(1);
+  }
+  95%, 97% {
+    opacity: 1;
+    transform: scaleY(0.1);
+  }
+}
+
+@keyframes lynxTuftTwitchLeft {
+  0%, 88%, 100% {
+    transform: rotate(0deg);
+  }
+  90% {
+    transform: rotate(-8deg);
+  }
+  93% {
+    transform: rotate(5deg);
+  }
+  96% {
+    transform: rotate(-3deg);
+  }
+}
+
+@keyframes lynxTuftTwitchRight {
+  0%, 85%, 100% {
+    transform: rotate(0deg);
+  }
+  88% {
+    transform: rotate(8deg);
+  }
+  92% {
+    transform: rotate(-4deg);
+  }
+  95% {
+    transform: rotate(2deg);
+  }
+}
+
+@keyframes lynxEmblemGlowPulse {
+  0%, 100% {
+    filter: drop-shadow(0 0 6px rgba(34, 211, 238, 0.75)) drop-shadow(0 0 16px rgba(6, 182, 212, 0.5));
+    opacity: 0.85;
+  }
+  50% {
+    filter: drop-shadow(0 0 16px rgba(34, 211, 238, 1)) drop-shadow(0 0 32px rgba(6, 182, 212, 0.95));
+    opacity: 1;
+  }
+}
+
+@keyframes sparkleDrift {
+  0% {
+    transform: translateY(0px) scale(0.6) rotate(0deg);
+    opacity: 0;
+  }
+  25% {
+    opacity: 0.95;
+  }
+  75% {
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateY(-80px) scale(1.1) rotate(180deg);
+    opacity: 0;
+  }
+}
+
+@keyframes speechBubbleBounce {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+.anim-lynx-breathe {
+  animation: lynxBreathing 4s ease-in-out infinite;
+}
+
+.anim-lynx-blink {
+  animation: lynxBlinkLoop 3.6s infinite;
+}
+
+.anim-tuft-left {
+  transform-origin: bottom center;
+  animation: lynxTuftTwitchLeft 5.2s ease-in-out infinite;
+}
+
+.anim-tuft-right {
+  transform-origin: bottom center;
+  animation: lynxTuftTwitchRight 6s ease-in-out infinite 0.8s;
+}
+
+.anim-emblem-glow {
+  animation: lynxEmblemGlowPulse 2.8s ease-in-out infinite;
+}
+
+.anim-sparkle {
+  animation: sparkleDrift 4s ease-in-out infinite;
+}
+
+.anim-bubble-bounce {
+  animation: speechBubbleBounce 3s ease-in-out infinite;
+}
+
+/* Domain Interactive Card */
+.domain-interactive-card {
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(226, 232, 240, 0.85);
+  box-shadow: 0 4px 12px -2px rgba(15, 23, 42, 0.05);
+}
+
+.domain-interactive-card:hover {
+  transform: translateY(-3px) scale(1.02);
+  background: #FFFFFF;
+  border-color: #93C5FD;
+  box-shadow: 0 10px 22px -4px rgba(37, 99, 235, 0.15), 0 0 0 1px #93C5FD;
+}
+
+.domain-interactive-card:active {
+  transform: translateY(-1px) scale(1);
+}
+
+/* Google Sign In Button */
+.btn-google-auth {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 13px 20px;
+  background: #FFFFFF;
+  border: 1.5px solid #E2E8F0;
+  border-radius: 16px;
+  font-family: inherit;
+  font-weight: 700;
+  font-size: 0.96rem;
+  color: #1E293B;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.06);
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-google-auth:hover:not(:disabled) {
+  transform: translateY(-2px);
+  border-color: #93C5FD;
+  box-shadow: 0 8px 24px rgba(37, 99, 235, 0.16);
+}
+
+.btn-google-auth:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.btn-google-auth:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
