@@ -1,15 +1,25 @@
 /**
- * Centralized API client for NETRA.
+ * Centralized API client for AVIRA.
  * Connects React frontend directly to FastAPI (/api/v1).
  * Never contains backend secrets, admin keys, or Firestore direct calls.
  */
 
-const BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://pw67.onrender.com';
-const API_PREFIX = import.meta.env.VITE_API_PREFIX || '/api/v1';
+const RAW_BASE_URL =
+  import.meta.env.VITE_API_BASE_URL ||
+  import.meta.env.VITE_API_URL ||
+  'https://onest-hackathon-ws3o.onrender.com';
+
+const RAW_API_PREFIX = import.meta.env.VITE_API_PREFIX ?? '/api/v1';
 
 export class ApiClient {
   static getBaseUrl() {
-    return `${BASE_URL}${API_PREFIX}`;
+    const base = String(RAW_BASE_URL).replace(/\/+$/, '');
+    // If BASE_URL already ends with /api/v1 or /api/v1/, do not duplicate prefix
+    if (base.endsWith('/api/v1')) {
+      return base;
+    }
+    const prefix = RAW_API_PREFIX ? `/${String(RAW_API_PREFIX).replace(/^\/+|\/+$/g, '')}` : '';
+    return `${base}${prefix}`;
   }
 
   /**
@@ -28,7 +38,8 @@ export class ApiClient {
   }
 
   static async request(endpoint, options = {}) {
-    const url = `${this.getBaseUrl()}${endpoint}`;
+    const cleanEndpoint = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
+    const url = `${this.getBaseUrl()}${cleanEndpoint}`;
     const headers = {
       'Content-Type': 'application/json',
       ...options.headers,
@@ -48,7 +59,11 @@ export class ApiClient {
 
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
-        const error = new Error(errorData.detail || errorData.message || `HTTP ${response.status}: ${response.statusText}`);
+        const error = new Error(
+          errorData.detail ||
+          errorData.message ||
+          `HTTP ${response.status}: ${response.statusText}`
+        );
         error.status = response.status;
         throw error;
       }
@@ -56,7 +71,7 @@ export class ApiClient {
       return await response.json();
     } catch (error) {
       // Log for developer debugging, return clean error
-      console.warn(`[NETRA ApiClient] Request to ${endpoint} failed:`, error.message);
+      console.warn(`[AVIRA ApiClient] Request to ${endpoint} failed:`, error.message);
       throw error;
     }
   }
