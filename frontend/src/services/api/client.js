@@ -4,12 +4,27 @@
  * Never contains backend secrets, admin keys, or Firestore direct calls.
  */
 
-const BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://127.0.0.1:8000';
+const BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://pw67.onrender.com';
 const API_PREFIX = import.meta.env.VITE_API_PREFIX || '/api/v1';
 
 export class ApiClient {
   static getBaseUrl() {
     return `${BASE_URL}${API_PREFIX}`;
+  }
+
+  /**
+   * Store a Firebase ID token for subsequent API calls.
+   */
+  static setAuthToken(token) {
+    if (token) {
+      localStorage.setItem('netra_auth_token', token);
+    } else {
+      localStorage.removeItem('netra_auth_token');
+    }
+  }
+
+  static getAuthToken() {
+    return localStorage.getItem('netra_auth_token');
   }
 
   static async request(endpoint, options = {}) {
@@ -19,8 +34,8 @@ export class ApiClient {
       ...options.headers,
     };
 
-    // Firebase Auth ID token can be dynamically injected when available
-    const token = localStorage.getItem('netra_auth_token');
+    // Firebase Auth ID token
+    const token = this.getAuthToken();
     if (token) {
       headers['Authorization'] = `Bearer ${token}`;
     }
@@ -33,7 +48,9 @@ export class ApiClient {
 
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.detail || errorData.message || `HTTP ${response.status}: ${response.statusText}`);
+        const error = new Error(errorData.detail || errorData.message || `HTTP ${response.status}: ${response.statusText}`);
+        error.status = response.status;
+        throw error;
       }
 
       return await response.json();

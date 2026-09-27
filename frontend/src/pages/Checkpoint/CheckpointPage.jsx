@@ -73,11 +73,38 @@ export const CheckpointPage = () => {
     });
   };
 
-  if (loading || !checkpoint) {
+  if (loading) {
     return (
       <div style={{ padding: '60px', textAlign: 'center', color: '#64748B' }}>
-        <RefreshCw size={26} className="anim-float" style={{ margin: '0 auto 12px' }} />
+        <RefreshCw size={26} className="anim-float anim-spin" style={{ margin: '0 auto 12px' }} />
         <h3 style={{ fontSize: '1.2rem', fontWeight: '700' }}>Loading Checkpoint Diagnostic...</h3>
+      </div>
+    );
+  }
+
+  if (!checkpoint) {
+    return (
+      <div style={{ padding: '60px 20px', textAlign: 'center', maxWidth: '480px', margin: '0 auto' }}>
+        <h3 style={{ fontSize: '1.2rem', fontWeight: '700', color: '#0F172A' }}>Checkpoint Complete</h3>
+        <p style={{ fontSize: '0.88rem', color: '#64748B', marginTop: '6px' }}>
+          This knowledge checkpoint is not active or has already been completed.
+        </p>
+        <button
+          type="button"
+          onClick={() => navigate('/dashboard')}
+          style={{
+            marginTop: '16px',
+            padding: '10px 20px',
+            borderRadius: '12px',
+            background: '#2563EB',
+            color: '#FFFFFF',
+            fontWeight: '700',
+            border: 'none',
+            cursor: 'pointer',
+          }}
+        >
+          Return to Dashboard
+        </button>
       </div>
     );
   }

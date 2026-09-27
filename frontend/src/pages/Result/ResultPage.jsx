@@ -21,7 +21,7 @@ export const ResultPage = () => {
   const skills = state.skillsAffected || ['HTML & Semantics'];
 
   const handleContinueJourney = () => {
-    navigate(`/domain/${activeDomain}`);
+    navigate(activeDomain ? `/domain/${activeDomain}` : '/dashboard');
   };
 
   return (

@@ -25,6 +25,7 @@ class UserUpdate(BaseModel):
     photo_url: Optional[str] = None
     target_role: Optional[str] = None
     target_company_tier: Optional[str] = None
+    selected_domain: Optional[str] = None
 
 
 class UserResponse(UserBase):
@@ -32,5 +33,7 @@ class UserResponse(UserBase):
 
     uid: str
     is_onboarded: bool = False
+    selected_domain: Optional[str] = None
     created_at: Optional[str] = None
+    last_login_at: Optional[str] = None
     updated_at: Optional[str] = None

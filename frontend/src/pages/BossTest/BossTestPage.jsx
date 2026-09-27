@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { assessmentService } from '../../services/api/assessmentService';
 import { LynxCompanion } from '../../components/lynx/LynxCompanion';
 import { useLearning } from '../../context/LearningContext';
-import { Swords, ShieldAlert, Award, ArrowRight, CheckCircle2, Flame } from 'lucide-react';
+import { Swords, ShieldAlert, Award, ArrowRight, CheckCircle2, Flame, RefreshCw } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
 export const BossTestPage = () => {
@@ -16,19 +16,56 @@ export const BossTestPage = () => {
   const [hasSubmitted, setHasSubmitted] = useState(false);
   const [isVictory, setIsVictory] = useState(false);
 
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     let isMounted = true;
+    setLoading(true);
     assessmentService.getBossTest(bossId)
       .then((res) => {
-        if (isMounted) setBossData(res.data);
+        if (isMounted) {
+          setBossData(res.data);
+          setLoading(false);
+        }
+      })
+      .catch(() => {
+        if (isMounted) setLoading(false);
       });
     return () => { isMounted = false; };
   }, [bossId]);
 
-  if (!bossData) {
+  if (loading) {
     return (
       <div style={{ padding: '60px', textAlign: 'center', color: '#64748B' }}>
+        <RefreshCw size={26} className="anim-float anim-spin" style={{ margin: '0 auto 12px' }} />
         <h3>Preparing Boss Arena...</h3>
+      </div>
+    );
+  }
+
+  if (!bossData) {
+    return (
+      <div style={{ padding: '60px 20px', textAlign: 'center', maxWidth: '480px', margin: '0 auto' }}>
+        <h3 style={{ fontSize: '1.2rem', fontWeight: '700', color: '#0F172A' }}>Boss Battle Completed</h3>
+        <p style={{ fontSize: '0.88rem', color: '#64748B', marginTop: '6px' }}>
+          This boss battle is not active or has already been completed.
+        </p>
+        <button
+          type="button"
+          onClick={() => navigate('/dashboard')}
+          style={{
+            marginTop: '16px',
+            padding: '10px 20px',
+            borderRadius: '12px',
+            background: '#2563EB',
+            color: '#FFFFFF',
+            fontWeight: '700',
+            border: 'none',
+            cursor: 'pointer',
+          }}
+        >
+          Return to Dashboard
+        </button>
       </div>
     );
   }

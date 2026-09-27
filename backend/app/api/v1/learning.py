@@ -1,12 +1,39 @@
 """Learning and curriculum API routes."""
 
-from typing import Any, Dict
+from typing import Any, Dict, List
 from fastapi import APIRouter, Depends
-from app.core.dependencies import get_current_user
+from app.core.dependencies import get_current_user, get_optional_current_user
 from app.schemas.learning import LearningJourneyResponse, LessonDetailResponse
 from app.services.learning_service import LearningService
 
 router = APIRouter(prefix="/learning", tags=["Learning"])
+
+
+@router.get("/domains")
+async def list_domains() -> List[Dict[str, Any]]:
+    """List all available learning domains. Public endpoint."""
+    service = LearningService()
+    return service.list_domains()
+
+
+@router.get("/domains/{domain_id}/journey")
+async def get_domain_journey(
+    domain_id: str,
+    current_user: Dict[str, Any] = Depends(get_current_user),
+) -> Dict[str, Any]:
+    """Retrieve personalized journey for a specific domain."""
+    service = LearningService()
+    return service.get_domain_journey(current_user["uid"], domain_id)
+
+
+@router.post("/domains/{domain_id}/select")
+async def select_domain(
+    domain_id: str,
+    current_user: Dict[str, Any] = Depends(get_current_user),
+) -> Dict[str, Any]:
+    """Select a learning domain for the current user."""
+    service = LearningService()
+    return service.select_domain(current_user["uid"], domain_id)
 
 
 @router.get("/journey", response_model=LearningJourneyResponse)
